@@ -7,4 +7,19 @@ import { ItemNavMenuComponent } from "../item-nav-menu/item-nav-menu.component";
   templateUrl: `./header.component.html`,
   styleUrl: './header.component.css',
 })
-export class HeaderComponent { }
+export class HeaderComponent {
+    scrollToSection(sectionId: string) {
+    const element = document.getElementById(sectionId);
+
+    if (element) {
+      const yOffset = -80;
+
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth',
+      });
+    }
+  }
+ }
