@@ -1,0 +1,96 @@
+  <div class="fixed inset-0 flex items-center justify-center bg-black/60">
+    <div
+      class="bg-white text-black rounded-xl rounded-t-2xl w-[90%] max-w-md shadow-xl flex flex-col justify-between"
+    >
+      <!-- HEADER -->
+      <div class="w-full bg-[#571108] rounded-t-xl px-3 py-2 text-white font-bold drop-shadow-2xl">
+        <h1 class="text-xl">Resumo do seu pedido</h1>
+      </div>
+
+      <!-- LISTA -->
+      <div class="w-full bg-white py-4 px-4 max-h-[400px] overflow-y-auto">
+        @if ((cartItems$ | async)?.length === 0) {
+  <div class="text-center py-10 px-6 flex flex-col items-center gap-3">
+
+    <!-- Ícone -->
+    <div class="bg-[#571108]/10 p-4 rounded-full">
+      <i class="fa-solid fa-cart-shopping text-3xl text-[#571108]"></i>
+    </div>
+
+    <!-- Título -->
+    <span class="text-gray-800 text-xl font-bold">
+      Seu carrinho está vazio
+    </span>
+
+    <!-- Descrição -->
+    <span class="text-gray-500 text-sm max-w-xs">
+      Adicione itens do cardápio para ver seu pedido aqui.
+    </span>
+
+    <!-- CTA -->
+    <button
+      class="mt-2 bg-[#571108] hover:bg-[#6d160a] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 hover:scale-105"
+      (click)="closeDlgAndScroll()"
+    >
+      Ver cardápio
+    </button>
+
+  </div>
+} 
+        @else {
+          @for (item of cartItems$ | async; track item.guid; let i = $index) {
+            <div class="flex items-center gap-3 border-b border-black/30 py-3">
+              <!-- IMAGEM -->
+              <img
+                [src]="item.imageUrl"
+                class="w-14 h-14 object-cover rounded-lg"
+                alt="{{ item.name }}"
+              />
+
+              <!-- INFO -->
+              <div class="flex-1">
+                <h2 class="font-semibold text-sm">{{ item.name }}</h2>
+                <p class="text-xs text-gray-500 truncate">
+                  {{ item.description }}
+                </p>
+                <span class="text-sm font-bold text-[#571108]">
+                  {{ item.price | currency: 'BRL' }}
+                </span>
+              </div>
+
+              <!-- DELETE -->
+              <button
+                class="text-red-500 hover:text-red-700 transition-all duration-200 cursor-pointer hover:scale-105"
+                (click)="removeItem($index)"
+              >
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- FOOTER -->
+      <div class="w-full flex justify-between items-center px-3 py-2">
+        <span class="font-bold text-[#571108]"> Total: {{ totalPrice | currency: 'BRL' }} </span>
+
+        <div class="flex justify-center gap-2">
+          <button
+            class="bg-[#160f0f] rounded-xl text-white px-3 py-1 cursor-pointer"
+            (click)="modalService.toggleCart()"
+          >
+            <i class="fa fa-xmark"></i>
+            Fechar
+          </button>
+          <button
+            class="bg-[#571108] rounded-xl text-white px-3 py-1 cursor-pointer transition-all duration-300 hover:bg-[#6d160a] hover:scale-105 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-none"
+            (click)="modalService.toggleCart()"
+            [disabled]="(cartItems$ | async)?.length === 0"
+          >
+            <i class="fa fa-credit-card"></i>
+            Pagar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

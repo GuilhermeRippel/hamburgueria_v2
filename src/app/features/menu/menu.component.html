@@ -1,0 +1,93 @@
+<div class="w-full flex justify-center min-h-screen bg-[#0e0705] py-16 px-4" id="cardapio">
+  <div class="w-full max-w-6xl flex flex-col items-center">
+    <!-- TÍTULO -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-amber-400 mb-4">Cardápio</h1>
+      <h2 class="text-lg md:text-xl text-gray-200 font-medium">
+        O melhor da casa pra você reunido em um único lugar
+      </h2>
+    </div>
+
+    <!-- CATEGORIAS -->
+    <div class="w-full flex justify-center gap-4 mb-10 flex-wrap">
+      @for (cat of categories; track cat) {
+        <button
+          (click)="selectCategory(cat)"
+          [ngClass]="
+            selectedCategory === cat ? 'bg-amber-500 text-black' : 'bg-[#1a1a1a] text-white'
+          "
+          class="px-5 py-2 rounded-full font-semibold transition-all duration-300 hover:scale-105  cursor-pointer"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
+
+    <!-- GRID DE PRODUTOS -->
+    <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      @for (product of visibleProducts; track product) {
+        <div
+          class="bg-[#1a1a1a] rounded-2xl p-4 shadow-lg hover:scale-[1.02] transition-all duration-300"
+        >
+          <!-- IMAGEM -->
+          <img
+            [src]="product.imageUrl"
+            alt="{{ product.name }}"
+            class="w-full h-40 object-cover rounded-xl mb-4"
+            (error)="product.imageUrl = 'assets/placeholder.png'"
+          />
+
+          <!-- NOME -->
+          <h3 class="text-xl font-bold text-white mb-2">
+            {{ product.name }}
+          </h3>
+
+          <!-- DESCRIÇÃO -->
+          <p class="text-gray-400 text-sm mb-4">
+            {{ product.description }}
+          </p>
+
+          <!-- PREÇO + BOTÃO -->
+          <div class="flex justify-between items-center">
+            <span class="text-amber-400 font-bold text-lg">
+              {{ product.price | currency: 'BRL' }}
+            </span>
+
+            <button
+              class="bg-[#571108] hover:bg-[#6d160a] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 hover:scale-105 cursor-pointer"
+              (click)="addCartItem(product)"
+            >
+              <i class="fa fa-plus"></i>
+              Carrinho
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="mt-10 flex gap-4 justify-center flex-wrap">
+      @if (visibleCount < filteredProducts.length) {
+        <button
+          (click)="showMore()"
+          class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
+        >
+          Ver mais
+        </button>
+      }
+
+      @if (visibleCount > 6) {
+        <button
+          (click)="showLess()"
+          class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
+        >
+          Ver menos
+        </button>
+      }
+    </div>
+
+    @if (filteredProducts.length === 0) {
+      <div class="text-gray-400 mt-10 text-center">Nenhum item encontrado</div>
+    }
+  </div>
+</div>

@@ -1,45 +1,90 @@
-<div class="hidden md:flex w-full items-center justify-between px-10 bg-[#571108]/96 backdrop-blur-md text-gray-50">
-  <div class="w-[75%] flex py-2 justify-around items-center">
-    <img src="assets/logo_hamburgueria.png" alt="No Ponto Logo" class="ml-5 h-20 object-contain hover:scale-105 transition-all duration-200" />
-    <button class="px-7 h-12 border border-white rounded-full flex justify-center items-center gap-2 hover:text-[#571108] hover:bg-white transition-all duration-250 cursor-pointer">
-      <span>Contato pelo WhatsApp</span>
+<!-- DESKTOP -->
+<div
+  class="hidden md:flex w-full items-center justify-between px-6 lg:px-12 xl:px-20 bg-[#571108]/96 backdrop-blur-md text-gray-50"
+>
+  <!-- ESQUERDA -->
+  <div class="flex items-center gap-16 lg:gap-24 py-1">
+    <img
+      src="assets/logo_hamburgueria.png"
+      alt="No Ponto Logo"
+      class="h-16 lg:h-20 object-contain hover:scale-105 transition-all duration-200"
+    />
+
+    <button
+      class="hidden md:flex px-6 h-11 border border-white rounded-full items-center gap-2 hover:text-[#571108] hover:bg-white transition-all duration-300 cursor-pointer"
+    >
+      <span class="whitespace-nowrap">WhatsApp</span>
       <i class="fa-brands fa-whatsapp"></i>
     </button>
   </div>
-  <div class="w-full flex justify-center">
-    <div class="w-[60%]">
-      <ul class="flex h-full items-center justify-center gap-10">
-        <li (click)="scrollToSection(`home`)">
-          <item-nav-menu title="Home"></item-nav-menu>
-        </li>
 
-        <li (click)="scrollToSection(`sobre`)">
-          <item-nav-menu title="Sobre nós"></item-nav-menu>
-        </li>
+  <!-- CENTRO -->
+  <ul class="flex items-center gap-6 lg:gap-10 xl:gap-14">
+    <li (click)="scrollToSection(`home`)">
+      <item-nav-menu title="Home"></item-nav-menu>
+    </li>
 
-        <li (click)="scrollToSection(`cardapio`)">
-          <item-nav-menu title="Cardápio"></item-nav-menu>
-        </li>
+    <li (click)="scrollToSection(`sobre`)">
+      <item-nav-menu title="Sobre nós"></item-nav-menu>
+    </li>
 
-        <li (click)="scrollToSection(`contato`)">
-          <item-nav-menu title="Entre em contato"></item-nav-menu>
-        </li>
-      </ul>
-    </div>
+    <li (click)="scrollToSection(`cardapio`)">
+      <item-nav-menu title="Cardápio"></item-nav-menu>
+    </li>
+
+    <li (click)="scrollToSection(`contato`)">
+      <item-nav-menu title="Contato"></item-nav-menu>
+    </li>
+  </ul>
+
+  <!-- DIREITA -->
+  <div
+    class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-white shadow-md hover:bg-white hover:text-[#571108] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+    (click)="modalService.toggleCart()"
+  >
+    <i class="fa-solid fa-cart-shopping text-lg lg:text-xl"></i>
+
+    <span class="text-sm font-semibold">
+      {{ totalPrice | currency: 'BRL' }}
+    </span>
   </div>
 </div>
 
-  <!-- MOBILE -->
+<!-- MOBILE -->
 <div class="md:hidden w-full flex items-center justify-between px-4 py-3 bg-[#571108] text-gray-50">
-
-  <img 
-    src="assets/logo_hamburgueria.png" 
+  
+  <!-- LOGO -->
+  <img
+    src="assets/logo_hamburgueria.png"
     alt="No Ponto Logo"
     class="h-12 object-contain"
   />
 
-  <button class="text-2xl">
-    <i class="fa-solid fa-bars"></i>
-  </button>
+  <!-- AÇÕES -->
+  <div class="flex items-center gap-3">
 
+    <!-- MENU -->
+    <button class="text-2xl cursor-pointer">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- CARRINHO -->
+    <div
+      class="flex items-center gap-2 px-3 py-1.5 rounded-full 
+      bg-white/10 backdrop-blur-md text-white shadow-md
+      active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+      (click)="modalService.toggleCart()"
+    >
+      <i class="fa-solid fa-cart-shopping text-base"></i>
+
+      <span class="text-sm font-semibold">
+        {{ totalPrice | currency: 'BRL'}}
+      </span>
+    </div>
+
+  </div>
 </div>
+
+@if (showCart$ | async) {
+  <modal-component></modal-component>
+}

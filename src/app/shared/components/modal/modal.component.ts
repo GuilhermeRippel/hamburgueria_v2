@@ -1,21 +1,19 @@
-import { Component, inject } from '@angular/core';
-import { ItemNavMenuComponent } from '../item-nav-menu/item-nav-menu.component';
-import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ProductService } from '../../services/product.service';
 import { ModalService } from '../../services/modal.service';
-import { ModalComponent } from "../modal/modal.component";
 
 @Component({
-  selector: 'header-component',
-  imports: [ItemNavMenuComponent, CommonModule, ModalComponent],
-  templateUrl: `./header.component.html`,
-  styleUrl: './header.component.css',
+  selector: 'modal-component',
+  imports: [CommonModule],
+  templateUrl: './modal.component.html',
+  styleUrl: './modal.component.css',
 })
-export class HeaderComponent {
+export class ModalComponent {
   private _productService = inject(ProductService);
   modalService = inject(ModalService);
   showCart$ = this.modalService.showCart$;
-  showDlgCart: boolean = false;
+  cartItems$ = this._productService.cartItems$;
   totalPrice: number = 0.0;
 
   ngOnInit() {
@@ -24,7 +22,7 @@ export class HeaderComponent {
     });
   }
 
-  scrollToSection(sectionId: string) {
+    scrollToSection(sectionId: string) {
     const element = document.getElementById(sectionId);
 
     if (element) {
@@ -39,7 +37,12 @@ export class HeaderComponent {
     }
   }
 
-  showDialogCart() {
-    this.showDlgCart = !this.showDlgCart;
+  closeDlgAndScroll(){
+    this.modalService.closeCart()
+    this.scrollToSection(`cardapio`)
+  }
+
+  removeItem(index: number) {
+    this._productService.removeItem(index);
   }
 }
