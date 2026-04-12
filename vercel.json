@@ -2,7 +2,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/hamburgueria_v2/browser/index.html"
+      "dest": "/index.html"
     }
   ]
 }
