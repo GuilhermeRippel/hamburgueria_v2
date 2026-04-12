@@ -7,7 +7,7 @@
     <img
       src="assets/logo_hamburgueria.png"
       alt="No Ponto Logo"
-      class="h-16 lg:h-20 object-contain hover:scale-105 transition-all duration-200"
+      class="h-12 lg:h-16 object-contain hover:scale-105 transition-all duration-200"
     />
 
     <button
@@ -52,37 +52,88 @@
 
 <!-- MOBILE -->
 <div class="md:hidden w-full flex items-center justify-between px-4 py-3 bg-[#571108] text-gray-50">
-  
   <!-- LOGO -->
-  <img
-    src="assets/logo_hamburgueria.png"
-    alt="No Ponto Logo"
-    class="h-12 object-contain"
-  />
+  <img src="assets/logo_hamburgueria.png" alt="No Ponto Logo" class="h-12 object-contain" />
 
   <!-- AÇÕES -->
   <div class="flex items-center gap-3">
-
     <!-- MENU -->
-    <button class="text-2xl cursor-pointer">
+    <button class="text-2xl cursor-pointer" (click)="toggleMobileMenu()">
       <i class="fa-solid fa-bars"></i>
     </button>
 
     <!-- CARRINHO -->
     <div
-      class="flex items-center gap-2 px-3 py-1.5 rounded-full 
-      bg-white/10 backdrop-blur-md text-white shadow-md
-      active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
+      class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-white shadow-md active:scale-95 transition-all duration-300 ease-in-out cursor-pointer"
       (click)="modalService.toggleCart()"
     >
       <i class="fa-solid fa-cart-shopping text-base"></i>
 
       <span class="text-sm font-semibold">
-        {{ totalPrice | currency: 'BRL'}}
+        {{ totalPrice | currency: 'BRL' }}
       </span>
     </div>
-
   </div>
+</div>
+
+<!-- OVERLAY -->
+@if (isMenuOpen) {
+  <div class="fixed inset-0 bg-black/40 z-40" (click)="toggleMobileMenu()"></div>
+}
+
+<!-- OVERLAY -->
+@if (isMenuOpen) {
+  <div
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300"
+    (click)="toggleMobileMenu()"
+  ></div>
+}
+
+<!-- MENU MOBILE -->
+<div
+  class="fixed bottom-0 left-0 w-full h-[55%] bg-white z-50 rounded-t-3xl shadow-2xl transform transition-all duration-300 ease-in-out flex flex-col"
+  [class.translate-y-full]="!isMenuOpen"
+  [class.translate-y-0]="isMenuOpen"
+  (click)="$event.stopPropagation()"
+>
+  <!-- HANDLE -->
+  <div class="w-full flex justify-center pt-3 pb-2">
+    <div class="w-14 h-1.5 bg-gray-300 rounded-full"></div>
+  </div>
+
+  <!-- ITENS -->
+  <div class="flex-1 flex flex-col justify-center items-center gap-6">
+    <button
+      class="w-[70%] text-lg font-semibold text-center text-[#571108] pb-2 transition-all duration-200 hover:opacity-80 hover:-translate-y-0.5 active:scale-95"
+      (click)="scrollToSection('home'); toggleMobileMenu()"
+    >
+      Home
+    </button>
+
+    <button
+      class="w-[70%] text-lg font-semibold text-center text-[#571108] pb-2 transition-all duration-200 hover:opacity-80 hover:-translate-y-0.5 active:scale-95"
+      (click)="scrollToSection('sobre'); toggleMobileMenu()"
+    >
+      Sobre nós
+    </button>
+
+    <button
+      class="w-[70%] text-lg font-semibold text-center text-[#571108] pb-2 transition-all duration-200 hover:opacity-80 hover:-translate-y-0.5 active:scale-95"
+      (click)="scrollToSection('cardapio'); toggleMobileMenu()"
+    >
+      Cardápio
+    </button>
+
+    <button
+      class="w-[70%] text-lg font-semibold text-center text-[#571108] transition-all duration-200 hover:opacity-80 hover:-translate-y-0.5 active:scale-95"
+      (click)="scrollToSection('contato'); toggleMobileMenu()"
+    >
+      Contato
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pb-4 text-center text-xs text-gray-400">© No Ponto</div>
 </div>
 
 @if (showCart$ | async) {

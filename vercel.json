@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "dist/hamburgueria_v2/browser/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/hamburgueria_v2/browser/index.html"
+    }
+  ]
+}
